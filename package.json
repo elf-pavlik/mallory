@@ -1,0 +1,10 @@
+{
+  "name": "mallory",
+  "private": true,
+  "workspaces": [
+    "rimraf"
+  ],
+  "scripts": {
+    "build": "npm run build -w rimraf"
+  }
+}
