@@ -1,10 +1,9 @@
 import { createVocabulary } from 'rdf-vocabulary'
 import dereference from 'rdf-dereference-store';
-import { Session } from '@uvdsl/solid-oidc-client-browser';
+import type { Session } from '@uvdsl/solid-oidc-client-browser';
 import type { DatasetCore } from '@rdfjs/types'
 
 const safetyRegex = /^https:\/\/mallory-says-[^.]+\.solidcommunity\.net\/$/
-// const safetyRegex = /^https:\/\/elf-[^.]+\.solidcommunity\.net\/$/
 
 const space = createVocabulary('http://www.w3.org/ns/pim/space#', 'storage')
 const ldp = createVocabulary('http://www.w3.org/ns/ldp#', 'contains')

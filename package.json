@@ -2,9 +2,13 @@
   "name": "mallory",
   "private": true,
   "workspaces": [
-    "rimraf"
+    "rimraf",
+    "cuckoo"
   ],
   "scripts": {
-    "build": "npm run build -w rimraf"
+    "build": "npm run build --workspaces"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "^2.2.5"
   }
 }
