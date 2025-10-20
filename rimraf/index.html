@@ -1,34 +1,508 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Solid Mallory</title>
-  <script async type="module" src="src/index.ts"></script>
-  <style>
-    @import url('https://fonts.googleapis.com/css2?family=Open%20Sans:wght@400;500;700&display=swap');
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Mallory - AI-Powered Calorie Tracking on Solid</title>
+    <meta
+      name="description"
+      content="Track your calories with AI while keeping your health data truly yours. Built on Solid Project for complete data sovereignty."
+    />
+    <script async type="module" src="src/index.ts"></script>
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap");
 
-    :root {
-      --md-ref-typeface-brand: 'Open Sans';
-      --md-ref-typeface-plain: system-ui;
-    }
-    body {
-      margin: 0;
-      padding: 0;
-      height: 100vh;
-      display: grid;
-      place-items: center;
-      background: #065899;
-      background: linear-gradient(0deg, #065899 0%, #d85777 100%);
-    }
-    main {
-      width: 60vw;
-    }
-  </style>
-</head>
-<body>
-  <main>
-      <mallory-app></mallory-app>
-  </main>
-</body>
+      :root {
+        --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        --secondary-gradient: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        --accent-gradient: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        --text-primary: #1a1a1a;
+        --text-secondary: #6b7280;
+        --text-light: #9ca3af;
+        --bg-white: #ffffff;
+        --bg-light: #f8fafc;
+        --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+        --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1),
+          0 2px 4px -2px rgb(0 0 0 / 0.1);
+        --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1),
+          0 4px 6px -4px rgb(0 0 0 / 0.1);
+        --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1),
+          0 8px 10px -6px rgb(0 0 0 / 0.1);
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Inter", system-ui, -apple-system, sans-serif;
+        line-height: 1.6;
+        color: var(--text-primary);
+        background: var(--bg-light);
+      }
+
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 1rem;
+      }
+
+      /* Header */
+      .header {
+        background: var(--bg-white);
+        box-shadow: var(--shadow-sm);
+        position: sticky;
+        top: 0;
+        z-index: 100;
+      }
+
+      .nav {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 1rem 0;
+      }
+
+      .logo {
+        font-size: 1.5rem;
+        font-weight: 700;
+        background: var(--primary-gradient);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+
+      .nav-links {
+        display: flex;
+        gap: 2rem;
+        list-style: none;
+      }
+
+      .nav-links a {
+        text-decoration: none;
+        color: var(--text-secondary);
+        font-weight: 500;
+        transition: color 0.2s;
+      }
+
+      .nav-links a:hover {
+        color: var(--text-primary);
+      }
+
+      /* Hero Section */
+      .hero {
+        padding: 4rem 0 6rem;
+        text-align: center;
+        background: var(--bg-white);
+      }
+
+      .hero h1 {
+        font-size: 3.5rem;
+        font-weight: 700;
+        margin-bottom: 1.5rem;
+        background: var(--primary-gradient);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        line-height: 1.2;
+      }
+
+      .hero-subtitle {
+        font-size: 1.25rem;
+        color: var(--text-secondary);
+        margin-bottom: 2rem;
+        max-width: 600px;
+        margin-left: auto;
+        margin-right: auto;
+      }
+
+      .cta-buttons {
+        display: flex;
+        gap: 1rem;
+        justify-content: center;
+        flex-wrap: wrap;
+        margin-bottom: 3rem;
+      }
+
+      .btn {
+        padding: 0.875rem 2rem;
+        border-radius: 0.5rem;
+        font-weight: 600;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        transition: all 0.2s;
+        border: none;
+        cursor: pointer;
+        font-size: 1rem;
+      }
+
+      .btn-primary {
+        background: var(--primary-gradient);
+        color: white;
+        box-shadow: var(--shadow-md);
+      }
+
+      .btn-primary:hover {
+        transform: translateY(-2px);
+        box-shadow: var(--shadow-lg);
+      }
+
+      .btn-secondary {
+        background: var(--bg-white);
+        color: var(--text-primary);
+        border: 2px solid #e5e7eb;
+      }
+
+      .btn-secondary:hover {
+        border-color: #d1d5db;
+        transform: translateY(-2px);
+      }
+
+      /* Features Section */
+      .features {
+        padding: 6rem 0;
+      }
+
+      .section-title {
+        text-align: center;
+        font-size: 2.5rem;
+        font-weight: 700;
+        margin-bottom: 1rem;
+        color: var(--text-primary);
+      }
+
+      .section-subtitle {
+        text-align: center;
+        font-size: 1.125rem;
+        color: var(--text-secondary);
+        margin-bottom: 4rem;
+        max-width: 600px;
+        margin-left: auto;
+        margin-right: auto;
+      }
+
+      .features-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 2rem;
+        margin-top: 4rem;
+      }
+
+      .feature-card {
+        background: var(--bg-white);
+        padding: 2rem;
+        border-radius: 1rem;
+        box-shadow: var(--shadow-md);
+        transition: transform 0.2s, box-shadow 0.2s;
+      }
+
+      .feature-card:hover {
+        transform: translateY(-4px);
+        box-shadow: var(--shadow-xl);
+      }
+
+      .feature-icon {
+        width: 3rem;
+        height: 3rem;
+        border-radius: 0.75rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 1.5rem;
+        font-size: 1.5rem;
+      }
+
+      .feature-icon.ai {
+        background: var(--accent-gradient);
+        color: white;
+      }
+
+      .feature-icon.privacy {
+        background: var(--secondary-gradient);
+        color: white;
+      }
+
+      .feature-icon.solid {
+        background: var(--primary-gradient);
+        color: white;
+      }
+
+      .feature-card h3 {
+        font-size: 1.25rem;
+        font-weight: 600;
+        margin-bottom: 1rem;
+        color: var(--text-primary);
+      }
+
+      .feature-card p {
+        color: var(--text-secondary);
+        line-height: 1.6;
+      }
+
+      /* Solid Integration Section */
+      .solid-section {
+        background: var(--bg-white);
+        padding: 6rem 0;
+        margin: 4rem 0;
+      }
+
+      .solid-content {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 4rem;
+        align-items: center;
+      }
+
+      .solid-text h2 {
+        font-size: 2.5rem;
+        font-weight: 700;
+        margin-bottom: 1.5rem;
+        color: var(--text-primary);
+      }
+
+      .solid-text p {
+        font-size: 1.125rem;
+        color: var(--text-secondary);
+        margin-bottom: 2rem;
+        line-height: 1.7;
+      }
+
+      .solid-benefits {
+        list-style: none;
+      }
+
+      .solid-benefits li {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        margin-bottom: 1rem;
+        color: var(--text-secondary);
+      }
+
+      .solid-benefits li::before {
+        content: "✓";
+        color: #10b981;
+        font-weight: bold;
+        font-size: 1.25rem;
+      }
+
+      .solid-visual {
+        background: var(--primary-gradient);
+        border-radius: 1rem;
+        padding: 2rem;
+        color: white;
+        text-align: center;
+      }
+
+      .solid-logo {
+        font-size: 4rem;
+        font-weight: 700;
+        margin-bottom: 1rem;
+      }
+
+      /* Footer */
+      .footer {
+        background: var(--text-primary);
+        color: white;
+        padding: 3rem 0;
+        text-align: center;
+      }
+
+      .footer p {
+        color: #9ca3af;
+        margin-bottom: 1rem;
+      }
+
+      .footer-links {
+        display: flex;
+        justify-content: center;
+        gap: 2rem;
+        margin-bottom: 2rem;
+      }
+
+      .footer-links a {
+        color: #d1d5db;
+        text-decoration: none;
+        transition: color 0.2s;
+      }
+
+      .footer-links a:hover {
+        color: white;
+      }
+
+      /* Responsive Design */
+      @media (max-width: 768px) {
+        .hero h1 {
+          font-size: 2.5rem;
+        }
+
+        .hero-subtitle {
+          font-size: 1.125rem;
+        }
+
+        .cta-buttons {
+          flex-direction: column;
+          align-items: center;
+        }
+
+        .solid-content {
+          grid-template-columns: 1fr;
+          gap: 2rem;
+        }
+
+        .nav-links {
+          display: none;
+        }
+
+        .features-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .footer-links {
+          flex-direction: column;
+          gap: 1rem;
+        }
+      }
+
+      /* App Integration */
+      .app-integration {
+        padding: 2rem 0;
+        margin: 2rem 0;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Header -->
+    <header class="header">
+      <nav class="nav container">
+        <div class="logo">Mallory</div>
+        <ul class="nav-links">
+          <li><a href="#features">Features</a></li>
+          <li><a href="#solid">Solid</a></li>
+          <li><a href="#about">About</a></li>
+        </ul>
+      </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+      <div class="container">
+        <h1>AI-Powered Calorie Tracking</h1>
+        <p class="hero-subtitle">
+          Track your nutrition with intelligent AI while keeping your health
+          data truly yours. Built on Solid Project for complete data sovereignty
+          and privacy.
+        </p>
+
+        <!-- App Integration -->
+        <div class="app-integration">
+          <mallory-app></mallory-app>
+        </div>
+      </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features" id="features">
+      <div class="container">
+        <h2 class="section-title">Why Choose Mallory?</h2>
+        <p class="section-subtitle">
+          Experience the future of health tracking with AI intelligence and
+          complete data ownership
+        </p>
+
+        <div class="features-grid">
+          <div class="feature-card">
+            <div class="feature-icon ai">🤖</div>
+            <h3>AI-Powered Analysis</h3>
+            <p>
+              Our advanced AI analyzes your food photos, estimates calories
+              automatically, and provides personalized nutrition insights to
+              help you reach your health goals.
+            </p>
+          </div>
+
+          <div class="feature-card">
+            <div class="feature-icon privacy">🔒</div>
+            <h3>Complete Privacy</h3>
+            <p>
+              Your health data stays in your Solid Pod. No third-party servers,
+              no data mining, no selling your personal information. You control
+              who accesses your data.
+            </p>
+          </div>
+
+          <div class="feature-card">
+            <div class="feature-icon solid">🌐</div>
+            <h3>Solid Integration</h3>
+            <p>
+              Built on the Solid Project by Sir Tim Berners-Lee, ensuring
+              interoperability and giving you true ownership of your personal
+              health data.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Solid Project Section -->
+    <section class="solid-section" id="solid">
+      <div class="container">
+        <div class="solid-content">
+          <div class="solid-text">
+            <h2>Powered by Solid Project</h2>
+            <p>
+              Mallory is built on the Solid Project, the evolution of the web by
+              its creator Sir Tim Berners-Lee. This means your health data is
+              stored in your own Solid Pod, giving you complete control and
+              ownership.
+            </p>
+            <ul class="solid-benefits">
+              <li>Your data stays in your Pod</li>
+              <li>Choose who can access your information</li>
+              <li>Interoperable with other Solid apps</li>
+              <li>No vendor lock-in</li>
+              <li>True data sovereignty</li>
+            </ul>
+            <a
+              href="https://solidproject.org/"
+              class="btn btn-primary"
+              target="_blank"
+            >
+              Learn More About Solid
+            </a>
+          </div>
+
+          <div class="solid-visual">
+            <div class="solid-logo">Solid</div>
+            <p>Your data, your choice</p>
+            <small>Advancing the Web to empower people and communities</small>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <div class="container">
+        <div class="footer-links">
+          <a href="https://solidproject.org/" target="_blank">Solid Project</a>
+          <a href="#privacy">Privacy Policy</a>
+          <a href="#terms">Terms of Service</a>
+          <a href="#contact">Contact</a>
+        </div>
+        <p>&copy; 2024 Mallory. Built with ❤️ on Solid Project.</p>
+        <p>
+          <em
+            >"When I invented the World Wide Web, I envisioned technology that
+            would empower people and enable collaboration."</em
+          >
+          - Sir Tim Berners-Lee
+        </p>
+      </div>
+    </footer>
+  </body>
 </html>
