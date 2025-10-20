@@ -1,5 +1,5 @@
 import { createVocabulary } from 'rdf-vocabulary'
-import type { Session } from '@uvdsl/solid-oidc-client-browser';
+import type { Session } from '@uvdsl/solid-oidc-client-browser'
 
 const malloryOp = 'https://auth.mallory.monster/'
 const solid = createVocabulary('http://www.w3.org/ns/solid/terms#', 'oidcIssuer')
@@ -18,7 +18,7 @@ export async function cuckoo(session: Session): Promise<void> {
     headers: {
       'Content-Type': 'application/sparql-update',
     },
-    body
+    body,
   })
   console.log('ok: ', ok)
 }
