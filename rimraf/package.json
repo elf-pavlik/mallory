@@ -17,6 +17,7 @@
   },
   "devDependencies": {
     "@rdfjs/types": "^2.0.1",
+    "rollup": "^4.52.4",
     "vite": "^7.1.9"
   }
 }
