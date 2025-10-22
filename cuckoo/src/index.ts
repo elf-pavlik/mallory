@@ -102,11 +102,9 @@ export class AbortOperation extends LitElement {
 export class MalloryBoard extends LitElement {
   static styles = css`
     :host {
-      display: flex;
       justify-content: center;
       align-items: center;
       padding: 2rem;
-      background: var(--primary-gradient);
     }
     
     .board-container {
@@ -120,18 +118,9 @@ export class MalloryBoard extends LitElement {
     
     g-chess-board {
       display: block;
+      height: 600px;
+      width: 600px;
       margin: 0 auto;
-    }
-    
-    .content {
-      display: flex;
-      flex: 1;
-      justify-content: space-between;
-      padding: 16px;
-      font-size: 1.2rem;
-    }
-    code {
-      padding-left: 0.75rem;
     }
   `
   async firstUpdated() {
