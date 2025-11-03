@@ -1,8 +1,7 @@
 <script setup lang="ts">
-import { computed, ref } from "vue";
+import { computed, ref, onMounted } from "vue";
 import { useRoute } from "vue-router";
 import { RouterLink } from "vue-router";
-import mockData from "../mock-data.json";
 import mockContent from "../mock-content";
 import Preview from "../components/Preview.vue";
 
@@ -13,6 +12,7 @@ interface FileNode {
 const route = useRoute();
 const selectedFile = ref<FileNode | null>(null);
 const isModalOpen = ref(false);
+const tree = ref<FileNode[]>([]);
 
 // Get current path from route
 const currentPath = computed(() => {
@@ -24,13 +24,22 @@ const currentPath = computed(() => {
   return pathString;
 });
 
+onMounted(async () => {
+  const response = await fetch("http://localhost:3000/leaks", {
+    method: "POST",
+    body: JSON.stringify({
+      webId: "https://ucho.solidcommunity.net/profile/card#me",
+    }),
+  });
+  tree.value = await response.json();
+});
 // Get children for the current path from flat structure
 const currentChildren = computed(() => {
   const path = currentPath.value;
   const pathPrefix = path ? path + "/" : "";
 
   // Filter items that are direct children of the current path
-  return mockData
+  return tree.value
     .filter((item) => {
       // For root level (empty path), show items with exactly 1 segment
       if (!path) {
