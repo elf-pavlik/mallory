@@ -1,0 +1,15 @@
+{
+  "name": "mallory-omni",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "format": "biome format . --write"
+  },
+  "dependencies": {
+    "@effect/platform": "0.92.1",
+    "@effect/platform-node": "0.98.4",
+    "effect": "3.18.4",
+    "n3": "^1.26.0",
+    "rdf-dereference-store": "^1.1.0"
+  }
+}
